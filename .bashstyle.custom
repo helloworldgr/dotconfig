@@ -1,4 +1,4 @@
-. bashstyle.custom.private
+. ~/.bashstyle.custom.private
 
 CLOCK_AD_1_COLOR=${orange}
 
