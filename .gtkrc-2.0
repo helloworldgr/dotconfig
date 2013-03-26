@@ -1,0 +1,15 @@
+# File created by Chakra Gtk Config
+# Configs for GTK2 progrmans 
+
+style "user-font" 
+{
+	font_name="DejaVu Sans"
+}
+widget_class "*" style "user-font"
+gtk-font-name="DejaVu Sans 10"
+gtk-theme-name="TerraNova-Clarius"
+gtk-icon-theme-name="oxygen-refit-2"
+gtk-fallback-icon-theme="gnome"
+gtk-toolbar-style=GTK_TOOLBAR_ICONS
+gtk-menu-images=1
+gtk-button-images=1

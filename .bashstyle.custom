@@ -1,0 +1,339 @@
+. bashstyle.custom.private
+
+CLOCK_AD_1_COLOR=${orange}
+
+CLOCK_AD_1 () {
+
+	echo " $(git_branch):$(git_action):$(git_revision) :"
+
+}
+
+repoadd () {
+
+	reprepro -Vb $HOME/apt-ng/ include photonic $1
+
+}
+
+reporem () {
+
+	reprepro -Vb $HOME/apt-ng/ remove photonic $1
+
+}
+
+alias jdownloader="java -jar /home/chris/Downloads/JDownloader/JDownloader.jar"
+
+dh-clean () {
+
+	rm -f debian/*[eE][xX]
+	rm -f debian/README*
+	sed -e "s/Initial release.*/Initial release/g" -i debian/changelog
+	sed -e "s/Maintainer.*/Maintainer: Christopher Roy Bratusek <nano@tuxfamily.org>/g" -i debian/control
+	sed -e "/Vcs-/d" -i debian/control
+	sed -e "s/Homepage.*/Homepage:/g" -i debian/control
+	sed -e "/long description/d" -i debian/control
+	sed -e "s/Description.*/Description:/g" -i debian/control
+	sed -e "3,9d" -i debian/rules
+	sed -e 's/dh $@/dh $@ --with python2/g' -i debian/rules
+	sed -e "s/#export/export/g" -i debian/rules
+
+}
+
+export CC="ccache gcc-4.8"
+export CXX="ccache g++-4.8"
+
+if [[ $PATH != *ccache* ]]; then
+	export PATH="/usr/lib/ccache/:$PATH"
+fi
+
+dh_orig () {
+
+	if [[ -d "$1" ]]; then
+		tar cf "$1".orig.tar "$1"
+		xz -9 "$1".orig.tar
+	fi
+
+}
+
+dh_com () {
+
+	if [[ -f "$1" ]]; then
+		case "$1" in
+			*.bz2)
+				BASE=$(basename "$1" .bz2)
+				OLD=$(du -h "$BASE".bz2)
+				bunzip2 "$BASE".bz2
+				xz -9 "$BASE"
+				NEW=$(du -h "$BASE".xz)
+				echo -e "\told size: $OLD\n\tnew size: $NEW\n"
+			;;
+
+			*.gz)
+				BASE=$(basename "$1" .gz)
+				OLD=$(du -h "$BASE".gz)
+				gunzip "$BASE".gz
+				xz -9 "$BASE"
+				NEW=$(du -h "$BASE".xz)
+				echo -e "\told size: $OLD\n\tnew size: $NEW\n"
+			;;
+		esac
+	fi
+}
+
+crypto_mount () {
+
+	sudo fsck /dev/mapper/DebianLVM-DebianLVM.Home.Crypto
+	mkdir -p /home/chris/.Crypto
+	sudo mount -tjfs -orw,uid=1000,gid=1000 /dev/mapper/DebianLVM-DebianLVM.Home.Crypto /home/chris/.Crypto
+	sudo losetup /dev/loop0 /home/chris/.Crypto/.DISK
+	sudo cryptsetup luksOpen /dev/loop0 DebianLVM-DebianLVM.Home.Crypto.Disk
+	mkdir -p /home/chris/.Crypto/Disk/
+	sudo mount -tjfs -orw,uid=1000,gid=1000 /dev/mapper/DebianLVM-DebianLVM.Home.Crypto.Disk /home/chris/.Crypto/Disk
+
+}
+
+crypto_umount () {
+
+	sudo umount /home/chris/.Crypto/Disk
+	rmdir /home/chris/.Crypto/Disk/
+	sudo cryptsetup luksClose DebianLVM-DebianLVM.Home.Crypto.Disk
+	sudo losetup -d /dev/loop0
+	sudo umount /home/chris/.Crypto
+	rmdir /home/chris/.Crypto
+
+}
+
+iso2wbfs () {
+
+	wit CONVERT -P -v -B --psel ALL -z -s "$1"
+
+}
+
+vsort () {
+
+	DEST="/var/run/chris/WiiHDDX/Filme/"
+
+	if [[ ! -e "$DEST" ]]; then
+		echo "hdd nicht gemounted"
+	fi
+
+	for vid in "$@"
+	do
+		case "$vid" in
+
+			Upps*) XDEST="$DEST/Comedy/Upps Die Pannenshow TV/" ;;
+			Kalkofe*) XDEST="$DEST/Comedy/Kalkofes Mattscheibe/" ;;
+			SR*) XDEST="$DEST/Comedy/Switch Reloaded/" ;;
+			Kabarett*) XDEST="$DEST/Comedy/Kabarett Aus Franken/" ;;
+			Wochenshow*) XDEST="$DEST/Comedy/Wochenshow/" ;;
+			Neues*Aus*) XDEST="$DEST/Comedy/Neues Aus Der Anstalt/" ;;
+			Heute*Show*) XDEST="$DEST/Comedy/Heute Show/" ;;
+			Walulis*) XDEST="$DEST/Comedy/Walulis Sieht Fern/" ;;
+			Rüttens*) XDEST="$DEST/Comedy/Rüttens Bullshit Universum/" ;;
+
+			DRP*) XDEST="$DEST/Kinder/Der Rosarote Panther/" ;;
+			DPAM*) XDEST="$DEST/Kinder/Die Pinguine Aus Madagaskar/" ;;
+			Garfield*) XDEST="$DEST/Kinder/Garfield Show/" ;;
+			T\&P*) XDEST="$DEST/Kinder/Timon & Pumbaa/" ;;
+			Merrie*Melodies*) XDEST="$DEST/Kinder/Merrie Melodies/" ;;
+			Looney*Tunes*) XDEST="$DEST/Kinder/Looney Tunes/" ;;
+			BLT*) XDEST="$DEST/Kinder/Baby Looney Tunes/" ;;
+			Micky*Wunderhaus* | MMWH*) XDEST="$DEST/Kinder/Micky Maus Wunderhaus/" ;;
+			*Disney* | Aladdin* | Tom*Jerry* | Madagascar*\
+			| In*Land*Zeit*) XDEST="$DEST/Kinder/" ;;
+
+			*DS9*) XDEST="$DEST/Star Trek/Deep Space Nine/" ;;
+			*TNG*) XDEST="$DEST/Star Trek/Das Nächste Jahrhundert/" ;;
+			TOS*) XDEST="$DEST/Star Trek/Raumschiff Enterprise/" ;;
+			*Voyager*) XDEST="$DEST/Star Trek/Raumschiff Voyager/" ;;
+
+			[0-9]*) XDEST="$DEST/0-9/" ;;
+			*) XDEST="$DEST/${vid:0:1}" ;;
+		esac
+
+		echo -e "$vid <::> $(basename "$XDEST" "$DEST")"
+
+		if [[ ! $TEST_SCRIPT ]]
+		then
+			if [[ ! -e "$XDEST" ]]
+			then
+				mkdir -p "$XDEST"
+			fi
+			mv "$vid" "$XDEST"
+		fi
+	done
+
+
+}
+
+vsync () {
+
+	if [[ $1 == "--wbfs" ]]; then
+		DIR="wbfs"
+	else	DIR="Filme"
+	fi
+
+	rsync --human-readable --progress -z --exclude="X4/" \
+		--ignore-existing --recursive --delete-during \
+		/run/media/chris/WiiHDDX/$DIR/ /run/media/chris/1F46-2AB8/$DIR/
+
+}
+
+wsync () {
+
+	vsync --wbfs
+
+}
+
+msort () {
+
+	case $1 in
+		v) DIR=Vinyl ;;
+		c) DIR=CD ;;
+		r) DIR=Radio ;;
+		l) DIR=Liveset ;;
+		d) DIR=Digital ;;
+		f) DIR=Free ;;
+		t) DIR=TEST ;;
+		*) echo no type given ;;
+	esac
+
+	if [[ $DIR ]]; then
+		shift
+
+		echo -e "\nsorting audio files of type: $DIR\n"
+
+		for i in "$@"; do
+			ARTIST=`lltag --show-tags artist "$i" | gawk -F= '{if (NR!=1) {print $2}}'`
+			TRACK=`lltag --show-tags title "$i" | gawk -F= '{if (NR!=1) {print $2}}'`
+			ALBUM=`lltag --show-tags album "$i" | gawk -F= '{if (NR!=1) {print $2}}'`
+
+			if [[ $DIR == "TEST" ]]; then
+				echo "$ARTIST :: $TRACK :: $ALBUM"
+			elif [[ ! $ARTIST || ! $TRACK || ! $ALBUM ]]; then
+				echo some tags missing in "$i".
+			elif [[ -d $HOME/Musik/$DIR ]]; then
+				echo "$i :: <$ARTIST/$ALBUM>"
+				mkdir -p $HOME/Musik/$DIR/"$ARTIST"/"$ALBUM"/
+				mv "$i" $HOME/Musik/$DIR/"$ARTIST"/"$ALBUM"/
+			else
+				echo hdd containing library not mounted.
+			fi
+		done
+
+	fi
+
+}
+
+btar () {
+
+	if [[ ! $1 ]]; then
+		echo "no directory/file given"
+		exit 1
+	fi
+
+	tar cfva $(basename "$1").tar.xz --absolute-names --preserve-permissions --same-owner "$@"
+
+}
+
+utar () {
+
+	if [[ ! $1 ]]; then
+		echo "no archive given"
+	fi
+
+	tar xfv "$1" --absolute-names --preserve-permissions --same-owner
+
+}
+
+sdist () {
+
+	if [[ $1 ]]; then
+		dir=$(basename $1)
+
+		tar cf $dir.tar $dir
+		bzip2 -9 $dir.tar
+		sha1sum $dir.tar.bz2 > $dir.tar.bz2.sha1
+		gpg --sign --detach-sign $dir.tar.bz2.sha1
+
+		tar cf $dir.tar $dir
+		xz -9 $dir.tar
+		sha1sum $dir.tar.xz > $dir.tar.xz.sha1
+		gpg --sign --detach-sign $dir.tar.xz.sha1
+	fi
+}
+
+bootimage () {
+	bash -c "cd $HOME/Downloads/sources/ && \
+	source $PWD/build/envsetup.sh && \
+	source $PWD/vendor/cm/vendorsetup.sh && \
+	unset CC CXX && \
+	lunch cm_p3110-userdebug && \
+	rm -f $PWD/out/target/product/p3110/boot.img && \
+	make TARGET_TOOLS_PREFIX=$PWD/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi- TARGET_PRODUCT=cm_p3110 bootimage && \
+	exit"
+}
+
+ums () {
+
+	if [[ $1 == "+" ]]; then
+		adb root
+		sleep 2
+		adb -s c1607c00051963f shell 'setprop sys.usb.config mass_storage,adb'
+	else
+		adb root
+		sleep 2
+		adb -s c1607c00051963f shell 'setprop sys.usb.config mtp,adb'
+	fi
+}
+
+dh-make () {
+
+	dh_make -s -e nano@tuxfamily.org -r dh7 --copyright $@
+	rm -f debian/*.ex debian/README* debian/*.EX
+	sed -e 's/1) unst/1nano) unst/g' -i debian/changelog
+	sed -e 's/\#export/export/g' -i debian/rules
+	sed -e 's/<insert.*//g' -e '/\#Vcs/d' -e 's/Section.*/Section:/g' -i debian/control
+
+}
+
+db () {
+
+	dpkg-buildpackage -rfakeroot $@
+
+}
+
+avienc () {
+
+	for i in "$@"; do mencoder -oac mp3lame -ovc lavc -o "$i".avi "$i"; done
+
+}
+
+adur () {
+
+	for i in "$@"; do
+		echo "$(basename "$i"):	$(ffmpeg -i "$i" 2>&1 | egrep "Duration" | cut -d ' ' -f 4 | sed s/,//)";
+	done
+
+}
+
+WinXp () {
+
+	/usr/bin/qemu 	-cpu qemu32 -soundhw ac97 -k de \
+			-vga qxl -enable-kvm -m 1024 -localtime \
+			-hda /home/chris/Downloads/WinXP.qcow2 \
+			-boot once=c,menu=off -net nic,vlan=0,model=pcnet \
+			-net user,vlan=0 -name WinXP \
+			-spice port=5900,addr=127.0.0.1,disable-ticketing,agent-mouse=on,playback-compression=on,seamless-migration=on,streaming-video=all \
+			-ctrl-grab -device virtio-serial-pci \
+			-device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+			-chardev spicevmc,id=spicechannel0,name=vdagent -smb qemu 2>&1 >~/qemu.log &
+	spicec -h 127.0.0.1 -p 5900 &
+
+}
+
+alias dc="fakeroot debian/rules clean"
+
+export DEVKITPRO="/opt/devkitpro"
+export DEVKITPPC="$DEVKITPRO/devkitPPC"
+export WIILOAD=tcp:192.168.1.5
+alias wiiload=/opt/devkitpro/devkitPPC/bin/wiiload

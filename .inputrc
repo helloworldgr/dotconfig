@@ -1,0 +1,13 @@
+set bell-style none
+set disable-completion off
+set horizontal-scroll-mode off
+set show-all-if-ambiguous on
+set match-hidden-files on
+set completition-ignore-case off
+set editing-mode emacs
+set visible-stats on
+set print-completions-horizontally on
+set mark-directories on
+set mark-symlinked-directories on
+set mark-modified-lines on
+set completion-query-items 100

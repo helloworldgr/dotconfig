@@ -1,0 +1,19 @@
+[user]
+	name = Christopher Roy Bratusek
+	email = nano@tuxfamily.org
+[color]
+	branch = true
+	diff = true
+	interactive = true
+	pager = true
+	status = true
+[core]
+	editor = vim
+[alias]
+	co = checkout
+	up = pull
+	re = reset --hard HEAD
+	ma = checkout master
+	who = shortlog -s --
+[push]
+	default = matching
