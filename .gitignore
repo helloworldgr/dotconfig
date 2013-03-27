@@ -10,6 +10,9 @@ Musik
 .config/akonadi
 .config/KVIrc/log/
 .config/geeqie/history
+.config/gtk-2.0
+.gconf
+.config/user*
 .tmw/updates/
 .mozilla/
 .config/YaRock/bbe5befacfede01288919058db1a7c32f0446564.db
