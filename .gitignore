@@ -12,6 +12,8 @@ Musik
 .config/geeqie/history
 .config/gtk-2.0
 .gconf
+.config/qBittorrent/qBittorrent-resume.conf
+.Xauthority-c
 .config/user*
 .tmw/updates/
 .mozilla/
