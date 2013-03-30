@@ -316,11 +316,11 @@ adur () {
 
 }
 
-WinXp () {
+WinXP () {
 
 	/usr/bin/qemu 	-cpu qemu32 -soundhw ac97 -k de \
 			-vga qxl -enable-kvm -m 1024 -localtime \
-			-hda /home/chris/Downloads/WinXP.qcow2 \
+			-hda /home/chris/WinXP.qcow2 \
 			-boot once=c,menu=off -net nic,vlan=0,model=pcnet \
 			-net user,vlan=0 -name WinXP \
 			-spice port=5900,addr=127.0.0.1,disable-ticketing,agent-mouse=on,playback-compression=on,seamless-migration=on,streaming-video=all \
