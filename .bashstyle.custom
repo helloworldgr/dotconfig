@@ -110,7 +110,7 @@ iso2wbfs () {
 
 vsort () {
 
-	DEST="/var/run/chris/WiiHDDX/Filme/"
+	DEST="/media/WiiHDDX/Filme/"
 
 	if [[ ! -e "$DEST" ]]; then
 		echo "hdd nicht gemounted"
@@ -174,7 +174,7 @@ vsync () {
 
 	rsync --human-readable --progress -z --exclude="X4/" \
 		--ignore-existing --recursive --delete-during \
-		/run/media/chris/WiiHDDX/$DIR/ /run/media/chris/1F46-2AB8/$DIR/
+		/media/WiiHDDX/$DIR/ /media/WiiHDD3/$DIR/
 
 }
 
@@ -318,15 +318,17 @@ adur () {
 
 WinXP () {
 
+	cd ${HOME}
 	/usr/bin/qemu 	-cpu qemu32 -soundhw ac97 -k de \
 			-vga qxl -enable-kvm -m 1024 -localtime \
-			-hda /home/chris/WinXP.qcow2 \
+			-hda /home/chris/WinXPVBox.qcow \
 			-boot once=c,menu=off -net nic,vlan=0,model=pcnet \
 			-net user,vlan=0 -name WinXP \
 			-spice port=5900,addr=127.0.0.1,disable-ticketing,agent-mouse=on,playback-compression=on,seamless-migration=on,streaming-video=all \
 			-ctrl-grab -device virtio-serial-pci \
 			-device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
 			-chardev spicevmc,id=spicechannel0,name=vdagent -smb qemu 2>&1 >~/qemu.log &
+	sleep 5 &&
 	spicec -h 127.0.0.1 -p 5900 &
 
 }

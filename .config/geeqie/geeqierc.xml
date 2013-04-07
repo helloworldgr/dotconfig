@@ -189,7 +189,7 @@
         main_window.h = "540" 
         main_window.maximized = "true" 
         main_window.hdivider_pos = "349" 
-        main_window.vdivider_pos = "345" 
+        main_window.vdivider_pos = "387" 
 
         float_window.x = "0" 
         float_window.y = "0" 

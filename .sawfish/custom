@@ -2,7 +2,7 @@
 ;; Use the configurator instead.
 ;; sawfish version 1.9.90, written Tue Mar 26 18:11:38 2013
 
-(custom-set-typed-variable (quote match-window-profile) (quote ((((WM_CLASS . "^Konsole/konsole$")) (frame-type . none) (never-expose . t) (iconify-on-leave . t) (never-delete . t) (fixed-position . t) (position . north) (depth . 2) (cycle-skip . t) (avoid) (animator . none) (no-history . t) (keymap-trans ("C-n" "C-S-t"))) (((WM_CLASS . "^spicec/spicec$")) (fixed-size . #t) (never-expose . #t)) (((WM_NAME . "^ShowMiiWads 1\\.5 by Leathl \\(mod by orwel\\)$")) (focus-mode . click)) (((WM_CLASS . "^Dolphin/dolphin$")) (frame-type . none) (never-delete . t) (position . south) (no-history . t) (avoid . t) (never-expose . t) (animator . none) (cycle-skip . t)) (((WM_CLASS . "^Razor-panel/razor-panel$")) (avoid) (depth . -2)) (((WM_CLASS . "^Sawfishpager/sawfishpager$")) (position . north-east) (fixed-positon . t) (never-maximize . t) (never-iconify . t) (frame-type . none) (cycle-skip . t) (window-list-skip . t) (sticky . t) (sticky-viewport . t) (never-expose . t) (avoid) (depth . 2)))) (quote match-window) (quote sawfish.wm.ext.match-window))
+(custom-set-typed-variable (quote match-window-profile) (quote ((((WM_CLASS . "^Konsole/konsole$")) (frame-type . none) (never-tile . t) (iconify-on-leave . t) (never-delete . t) (fixed-position . t) (position . north) (depth . 2) (cycle-skip . t) (avoid) (animator . none) (no-history . t) (keymap-trans ("C-n" "C-S-t"))) (((WM_CLASS . "^spicec/spicec$")) (fixed-size . #t) (never-tile . #t)) (((WM_NAME . "^ShowMiiWads 1\\.5 by Leathl \\(mod by orwel\\)$")) (focus-mode . click)) (((WM_CLASS . "^Dolphin/dolphin$")) (frame-type . none) (never-delete . t) (position . south) (no-history . t) (avoid . t) (never-tile . t) (animator . none) (cycle-skip . t)) (((WM_CLASS . "^Razor-panel/razor-panel$")) (avoid) (depth . -2)) (((WM_CLASS . "^Sawfishpager/sawfishpager$")) (position . north-east) (fixed-positon . t) (never-maximize . t) (never-iconify . t) (frame-type . none) (cycle-skip . t) (window-list-skip . t) (sticky . t) (sticky-viewport . t) (never-tile . t) (avoid) (depth . 2)))) (quote match-window) (quote sawfish.wm.ext.match-window))
 (custom-set-typed-variable (quote init-xmodmap) (quote ()) (quote boolean))
 (custom-set-typed-variable (quote init-xsettingsd) (quote ()) (quote boolean))
 (custom-set-typed-variable (quote init-xmobar) (quote ()) (quote boolean))
@@ -20,7 +20,7 @@
 (custom-set-typed-variable (quote custom-text-y-position) (quote center) (quote (choice default top center bottom)))
 (custom-set-typed-variable (quote test) (quote ()) (quote boolean))
 (custom-set-typed-variable (quote animate-move-mode) (quote lin) (quote symbol))
-(custom-set-typed-variable (quote top-bottom-edge-move-action) (quote none/hot-move) (quote (choice none/hot-move viewport-drag flip-workspace flip-viewport expose-windows expand-window maximize-window)))
+(custom-set-typed-variable (quote top-bottom-edge-move-action) (quote none/hot-move) (quote (choice none/hot-move viewport-drag flip-workspace flip-viewport expand-window maximize-window)))
 (custom-set-typed-variable (quote init-clipit) (quote t) (quote boolean))
 (custom-set-typed-variable (quote init-trayer) (quote ()) (quote boolean))
 (custom-set-typed-variable (quote wallpaper-setter-args) (quote "-fill") (quote string))
@@ -69,7 +69,7 @@
 (custom-set-typed-variable (quote maximize-button-cursor-shape) (quote plus) (quote (choice arrow box_spiral center_ptr circle cross cross_reverse crosshair diamond_cross dotbox double_arrow draped_box fleur hand1 hand2 iron_cross left_ptr ll_angel mouse pencil pirate plus question_arrow right_ptr sb_left_arrow sb_right_arrow sb_bottom_arrow sb_top_arrow spider star target tcross xterm X_cursor)))
 (custom-set-typed-variable (quote prompt-color) (quote ("#000000000000" . "#ffffffffffff")) (quote (pair (labelled "Foreground:" color) (labelled "Background:" color))))
 (custom-set-typed-variable (quote transients-above) (quote parents) (quote (choice all parents none)))
-(custom-set-typed-variable (quote left-right-edge-action) (quote flip-viewport) (quote (choice none/hot-spot viewport-drag flip-workspace flip-viewport expose-windows show-desktop)))
+(custom-set-typed-variable (quote left-right-edge-action) (quote flip-viewport) (quote (choice none/hot-spot viewport-drag flip-workspace flip-viewport show-desktop)))
 (custom-set-typed-variable (quote x-test) (quote 1) (quote (choice 1 2 3 4 5 6 7 8 9 0)))
 (custom-set-typed-variable (quote styletab-c:proposals) (quote Blue) (quote symbol))
 (custom-set-typed-variable (quote close-button-cursor-shape) (quote pirate) (quote (choice arrow box_spiral center_ptr circle cross cross_reverse crosshair diamond_cross dotbox double_arrow draped_box fleur hand1 hand2 iron_cross left_ptr ll_angel mouse pencil pirate plus question_arrow right_ptr sb_left_arrow sb_right_arrow sb_bottom_arrow sb_top_arrow spider star target tcross xterm X_cursor)))

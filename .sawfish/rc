@@ -102,7 +102,7 @@
           ( window-list-skip . t )
           ( sticky . t )
           ( sticky-viewport . t )
-	  ( never-expose . t )
+	  ( never-tile . t )
 	  ( avoid . () )
 	  ( depth . 2 ) ) )
 
@@ -116,13 +116,13 @@
 	  ( position . south )
 	  ( no-history . t )
 	  ( avoid . t )
-	  ( never-expose . t )
+	  ( never-tile . t )
 	  ( animator . none )
 	  ( cycle-skip . t ) ) )
 
 ( add-window-matcher '( ( WM_CLASS . "^Konsole/konsole$" ) )
        '( ( frame-type . none )
-          ( never-expose . t )
+          ( never-tile . t )
 	  ( iconify-on-leave . t )
 	  ( never-delete . t )
 	  ( fixed-position . t )
@@ -511,9 +511,13 @@ Frame Height: \t\t %s pixels
 ;; Tiling
 
 ( require 'sawfish.wm.tile.tile )
-( tall-tiling 0 #:width 1.75 #:top 0 #:bottom 1 #:gap 1 #:max 3 )
-(  bind-keys global-keymap
-	   "F11" 'tile-workspace
+( col-tiling 0 #:top 0 #:bottom 0 #:gap 3 #:cols 3 )
+( tall-tiling 0 #:width 1.75 #:top 0 #:bottom 0 #:gap 3 #:max 3 )
+( bind-keys global-keymap
 	   "C-S-KP_Add" 'increase-max-windows
 	   "C-S-KP_Subtract" 'decrease-max-windows
+	   "C-M-KP_Add" 'increase-cols
+	   "C-M-KP_Subtract" 'decrease-cols
+	   "C-M-Left" 'tall-rotate-left
+	   "C-M-Right" 'tall-rotate-right
 	   "C-F11" 'next-tiling )
